@@ -1,0 +1,132 @@
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           Intel 80386
+  Version:                           0x1
+  Entry point address:               0x390
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          5828 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         3
+  Size of section headers:           40 (bytes)
+  Number of section headers:         24
+  Section header string table index: 23
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .hash             HASH            00000094 000094 000038 04   A  2   0  4
+  [ 2] .dynsym           DYNSYM          000000cc 0000cc 000090 10   A  3   1  4
+  [ 3] .dynstr           STRTAB          0000015c 00015c 000079 00   A  0   0  1
+  [ 4] .rel.plt          REL             000001d8 0001d8 000038 08  AI  2  10  4
+  [ 5] .plt              PROGBITS        00000210 000210 000080 04  AX  0   0 16
+  [ 6] .text             PROGBITS        00000290 000290 000127 00  AX  0   0 16
+  [ 7] .rodata           PROGBITS        000003b8 0003b8 00005b 01 AMS  0   0  4
+  [ 8] .eh_frame         PROGBITS        00000414 000414 000000 00   A  0   0  4
+  [ 9] .dynamic          DYNAMIC         00001414 000414 000080 08  WA  3   0  4
+  [10] .got.plt          PROGBITS        00001494 000494 000028 04  WA  0   0  4
+  [11] .comment          PROGBITS        00000000 0004bc 000012 01  MS  0   0  1
+  [12] .debug_aranges    PROGBITS        00000000 0004ce 000040 00      0   0  1
+  [13] .debug_info       PROGBITS        00000000 00050e 000660 00      0   0  1
+  [14] .debug_abbrev     PROGBITS        00000000 000b6e 0001c3 00      0   0  1
+  [15] .debug_line       PROGBITS        00000000 000d31 000159 00      0   0  1
+  [16] .debug_frame      PROGBITS        00000000 000e8c 00009c 00      0   0  4
+  [17] .debug_str        PROGBITS        00000000 000f28 000373 01  MS  0   0  1
+  [18] .debug_line_str   PROGBITS        00000000 00129b 00010f 01  MS  0   0  1
+  [19] .debug_loclists   PROGBITS        00000000 0013aa 000069 00      0   0  1
+  [20] .debug_rnglists   PROGBITS        00000000 001413 000020 00      0   0  1
+  [21] .symtab           SYMTAB          00000000 001434 0000f0 10     22   7  4
+  [22] .strtab           STRTAB          00000000 001524 0000b5 00      0   0  1
+  [23] .shstrtab         STRTAB          00000000 0015d9 0000ea 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), p (processor specific)
+
+There are no section groups in this file.
+
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  LOAD           0x000000 0x00000000 0x00000000 0x00414 0x00414 R E 0x1000
+  LOAD           0x000414 0x00001414 0x00001414 0x000a8 0x000a8 RW  0x1000
+  DYNAMIC        0x000414 0x00001414 0x00001414 0x00080 0x00080 RW  0x4
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .hash .dynsym .dynstr .rel.plt .plt .text .rodata 
+   01     .dynamic .got.plt 
+   02     .dynamic 
+
+Dynamic section at offset 0x414 contains 11 entries:
+  Tag        Type                         Name/Value
+ 0x7ffffffd (AUXILIARY)                  Auxiliary library: [PIC]
+ 0x00000004 (HASH)                       0x94
+ 0x00000005 (STRTAB)                     0x15c
+ 0x00000006 (SYMTAB)                     0xcc
+ 0x0000000a (STRSZ)                      121 (bytes)
+ 0x0000000b (SYMENT)                     16 (bytes)
+ 0x00000003 (PLTGOT)                     0x1494
+ 0x00000002 (PLTRELSZ)                   56 (bytes)
+ 0x00000014 (PLTREL)                     REL
+ 0x00000017 (JMPREL)                     0x1d8
+ 0x00000000 (NULL)                       0x0
+
+Relocation section '.rel.plt' at offset 0x1d8 contains 7 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+000014a0  00000107 R_386_JUMP_SLOT   00000000   syscall_exit_from[...]
+000014a4  00000207 R_386_JUMP_SLOT   00000000   task_type_to_string
+000014a8  00000307 R_386_JUMP_SLOT   00000000   set_debug_output
+000014ac  00000507 R_386_JUMP_SLOT   00000290   main
+000014b0  00000607 R_386_JUMP_SLOT   00000000   printf_
+000014b4  00000707 R_386_JUMP_SLOT   00000000   task_status_to_string
+000014b8  00000807 R_386_JUMP_SLOT   00000000   get_tasks
+No processor specific unwind information to decode
+
+Symbol table '.dynsym' contains 9 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND syscall_exit_fro[...]
+     2: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND task_type_to_string
+     3: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND set_debug_output
+     4: 00000390    35 FUNC    GLOBAL DEFAULT    6 __start
+     5: 00000290   251 FUNC    GLOBAL DEFAULT    6 main
+     6: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND printf_
+     7: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND task_status_to_string
+     8: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND get_tasks
+
+Symbol table '.symtab' contains 15 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000000     0 FILE    LOCAL  DEFAULT  ABS app.c
+     2: 00000000     0 FILE    LOCAL  DEFAULT  ABS ps.c
+     3: 00000000     0 FILE    LOCAL  DEFAULT  ABS 
+     4: 00001414     0 OBJECT  LOCAL  DEFAULT    9 _DYNAMIC
+     5: 000003b3     0 FUNC    LOCAL  DEFAULT    6 __x86.get_pc_thunk.bx
+     6: 00001494     0 OBJECT  LOCAL  DEFAULT   10 _GLOBAL_OFFSET_TABLE_
+     7: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND syscall_exit_fro[...]
+     8: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND task_type_to_string
+     9: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND set_debug_output
+    10: 00000390    35 FUNC    GLOBAL DEFAULT    6 __start
+    11: 00000290   251 FUNC    GLOBAL DEFAULT    6 main
+    12: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND printf_
+    13: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND task_status_to_string
+    14: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND get_tasks
+
+Histogram for bucket list length (total of 3 buckets):
+ Length  Number     % of total  Coverage
+      0  0          (  0.0%)
+      1  1          ( 33.3%)     12.5%
+      2  1          ( 33.3%)     37.5%
+      3  0          (  0.0%)     37.5%
+      4  0          (  0.0%)     37.5%
+      5  1          ( 33.3%)    100.0%
+
+No version information found in this file.

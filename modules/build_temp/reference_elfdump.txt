@@ -1,0 +1,117 @@
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           Intel 80386
+  Version:                           0x1
+  Entry point address:               0x1a0
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          2960 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         3
+  Size of section headers:           40 (bytes)
+  Number of section headers:         23
+  Section header string table index: 22
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .hash             HASH            00000094 000094 00002c 04   A  2   0  4
+  [ 2] .dynsym           DYNSYM          000000c0 0000c0 000060 10   A  3   1  4
+  [ 3] .dynstr           STRTAB          00000120 000120 00003b 00   A  0   0  1
+  [ 4] .rel.plt          REL             0000015c 00015c 000010 08  AI  2  10  4
+  [ 5] .plt              PROGBITS        00000170 000170 000030 04  AX  0   0 16
+  [ 6] .text             PROGBITS        000001a0 0001a0 0000cf 00  AX  0   0 16
+  [ 7] .rodata           PROGBITS        0000026f 00026f 000033 01 AMS  0   0  1
+  [ 8] .eh_frame         PROGBITS        000002a4 0002a4 0000cc 00   A  0   0  4
+  [ 9] .dynamic          DYNAMIC         00001370 000370 000080 08  WA  3   0  4
+  [10] .got.plt          PROGBITS        000013f0 0003f0 000014 04  WA  0   0  4
+  [11] .comment          PROGBITS        00000000 000404 000012 01  MS  0   0  1
+  [12] .debug_aranges    PROGBITS        00000000 000416 000028 00      0   0  1
+  [13] .debug_info       PROGBITS        00000000 00043e 0001b3 00      0   0  1
+  [14] .debug_abbrev     PROGBITS        00000000 0005f1 00010b 00      0   0  1
+  [15] .debug_line       PROGBITS        00000000 0006fc 0000ad 00      0   0  1
+  [16] .debug_str        PROGBITS        00000000 0007a9 00011a 01  MS  0   0  1
+  [17] .debug_line_str   PROGBITS        00000000 0008c3 000080 01  MS  0   0  1
+  [18] .debug_loclists   PROGBITS        00000000 000943 00002a 00      0   0  1
+  [19] .debug_rnglists   PROGBITS        00000000 00096d 000019 00      0   0  1
+  [20] .symtab           SYMTAB          00000000 000988 0000b0 10     21   6  4
+  [21] .strtab           STRTAB          00000000 000a38 00007a 00      0   0  1
+  [22] .shstrtab         STRTAB          00000000 000ab2 0000dd 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), p (processor specific)
+
+There are no section groups in this file.
+
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  LOAD           0x000000 0x00000000 0x00000000 0x00370 0x00370 R E 0x1000
+  LOAD           0x000370 0x00001370 0x00001370 0x00094 0x00094 RW  0x1000
+  DYNAMIC        0x000370 0x00001370 0x00001370 0x00080 0x00080 RW  0x4
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .hash .dynsym .dynstr .rel.plt .plt .text .rodata .eh_frame 
+   01     .dynamic .got.plt 
+   02     .dynamic 
+
+Dynamic section at offset 0x370 contains 11 entries:
+  Tag        Type                         Name/Value
+ 0x7ffffffd (AUXILIARY)                  Auxiliary library: [PIC]
+ 0x00000004 (HASH)                       0x94
+ 0x00000005 (STRTAB)                     0x120
+ 0x00000006 (SYMTAB)                     0xc0
+ 0x0000000a (STRSZ)                      59 (bytes)
+ 0x0000000b (SYMENT)                     16 (bytes)
+ 0x00000003 (PLTGOT)                     0x13f0
+ 0x00000002 (PLTRELSZ)                   16 (bytes)
+ 0x00000014 (PLTREL)                     REL
+ 0x00000017 (JMPREL)                     0x15c
+ 0x00000000 (NULL)                       0x0
+
+Relocation section '.rel.plt' at offset 0x15c contains 2 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+000013fc  00000207 R_386_JUMP_SLOT   00000000   set_debug_output
+00001400  00000407 R_386_JUMP_SLOT   00000000   printf_
+No processor specific unwind information to decode
+
+Symbol table '.dynsym' contains 6 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000230    59 FUNC    GLOBAL DEFAULT    6 module_exit
+     2: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND set_debug_output
+     3: 000001a0    74 FUNC    GLOBAL DEFAULT    6 main
+     4: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND printf_
+     5: 000001f0    59 FUNC    GLOBAL DEFAULT    6 module_init
+
+Symbol table '.symtab' contains 11 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000000     0 FILE    LOCAL  DEFAULT  ABS reference.cpp
+     2: 00000000     0 FILE    LOCAL  DEFAULT  ABS 
+     3: 00001370     0 OBJECT  LOCAL  DEFAULT    9 _DYNAMIC
+     4: 0000026b     0 FUNC    LOCAL  DEFAULT    6 __x86.get_pc_thunk.bx
+     5: 000013f0     0 OBJECT  LOCAL  DEFAULT   10 _GLOBAL_OFFSET_TABLE_
+     6: 00000230    59 FUNC    GLOBAL DEFAULT    6 module_exit
+     7: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND set_debug_output
+     8: 000001a0    74 FUNC    GLOBAL DEFAULT    6 main
+     9: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND printf_
+    10: 000001f0    59 FUNC    GLOBAL DEFAULT    6 module_init
+
+Histogram for bucket list length (total of 3 buckets):
+ Length  Number     % of total  Coverage
+      0  1          ( 33.3%)
+      1  0          (  0.0%)      0.0%
+      2  1          ( 33.3%)     40.0%
+      3  1          ( 33.3%)    100.0%
+
+No version information found in this file.

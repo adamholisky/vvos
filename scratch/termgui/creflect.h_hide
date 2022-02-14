@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <sys/ioctl.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdarg.h>
+
+#ifndef CREFLECT_INCLUDE
+#define CREFLECT_INCLUDE
+
+typedef void (*reflect_func)(void *);
+
+#define v(x) find_and_display( #x "", (void *)x )
+
+
+typedef struct {
+        char * hashed;
+        reflect_func func;
+} var_hash;
+
+void find_and_display( char * name, void * var );
+
+#endif

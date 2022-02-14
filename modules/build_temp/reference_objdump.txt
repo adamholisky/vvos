@@ -1,0 +1,341 @@
+
+build/reference.vvs:     file format elf32-i386
+build/reference.vvs
+architecture: i386, flags 0x00000150:
+HAS_SYMS, DYNAMIC, D_PAGED
+start address 0x000001a0
+
+Program Header:
+    LOAD off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**12
+         filesz 0x00000370 memsz 0x00000370 flags r-x
+    LOAD off    0x00000370 vaddr 0x00001370 paddr 0x00001370 align 2**12
+         filesz 0x00000094 memsz 0x00000094 flags rw-
+ DYNAMIC off    0x00000370 vaddr 0x00001370 paddr 0x00001370 align 2**2
+         filesz 0x00000080 memsz 0x00000080 flags rw-
+
+Dynamic Section:
+  AUXILIARY            PIC
+  HASH                 0x00000094
+  STRTAB               0x00000120
+  SYMTAB               0x000000c0
+  STRSZ                0x0000003b
+  SYMENT               0x00000010
+  PLTGOT               0x000013f0
+  PLTRELSZ             0x00000010
+  PLTREL               0x00000011
+  JMPREL               0x0000015c
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .hash         0000002c  00000094  00000094  00000094  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .dynsym       00000060  000000c0  000000c0  000000c0  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  2 .dynstr       0000003b  00000120  00000120  00000120  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  3 .rel.plt      00000010  0000015c  0000015c  0000015c  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  4 .plt          00000030  00000170  00000170  00000170  2**4
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  5 .text         000000cf  000001a0  000001a0  000001a0  2**4
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  6 .rodata       00000033  0000026f  0000026f  0000026f  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .eh_frame     000000cc  000002a4  000002a4  000002a4  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  8 .dynamic      00000080  00001370  00001370  00000370  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .got.plt      00000014  000013f0  000013f0  000003f0  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+ 10 .comment      00000012  00000000  00000000  00000404  2**0
+                  CONTENTS, READONLY
+ 11 .debug_aranges 00000028  00000000  00000000  00000416  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 12 .debug_info   000001b3  00000000  00000000  0000043e  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 13 .debug_abbrev 0000010b  00000000  00000000  000005f1  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 14 .debug_line   000000ad  00000000  00000000  000006fc  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 15 .debug_str    0000011a  00000000  00000000  000007a9  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 16 .debug_line_str 00000080  00000000  00000000  000008c3  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 17 .debug_loclists 0000002a  00000000  00000000  00000943  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 18 .debug_rnglists 00000019  00000000  00000000  0000096d  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 reference.cpp
+00000000 l    df *ABS*	00000000 
+00001370 l     O .dynamic	00000000 _DYNAMIC
+0000026b l     F .text	00000000 __x86.get_pc_thunk.bx
+000013f0 l     O .got.plt	00000000 _GLOBAL_OFFSET_TABLE_
+00000230 g     F .text	0000003b module_exit
+00000000         *UND*	00000000 set_debug_output
+000001a0 g     F .text	0000004a main
+00000000         *UND*	00000000 printf_
+000001f0 g     F .text	0000003b module_init
+
+
+Contents of section .hash:
+ 0094 03000000 06000000 05000000 04000000  ................
+ 00a4 00000000 00000000 00000000 01000000  ................
+ 00b4 00000000 03000000 02000000           ............    
+Contents of section .dynsym:
+ 00c0 00000000 00000000 00000000 00000000  ................
+ 00d0 26000000 30020000 3b000000 12000600  &...0...;.......
+ 00e0 0d000000 00000000 00000000 10000000  ................
+ 00f0 32000000 a0010000 4a000000 12000600  2.......J.......
+ 0100 1e000000 00000000 00000000 10000000  ................
+ 0110 01000000 f0010000 3b000000 12000600  ........;.......
+Contents of section .dynstr:
+ 0120 006d6f64 756c655f 696e6974 00736574  .module_init.set
+ 0130 5f646562 75675f6f 75747075 74007072  _debug_output.pr
+ 0140 696e7466 5f006d6f 64756c65 5f657869  intf_.module_exi
+ 0150 74006d61 696e0050 494300             t.main.PIC.     
+Contents of section .rel.plt:
+ 015c fc130000 07020000 00140000 07040000  ................
+Contents of section .plt:
+ 0170 ffb30400 0000ffa3 08000000 00000000  ................
+ 0180 ffa30c00 00006800 000000e9 e0ffffff  ......h.........
+ 0190 ffa31000 00006808 000000e9 d0ffffff  ......h.........
+Contents of section .text:
+ 01a0 8d4c2404 83e4f0ff 71fc5589 e553e8b8  .L$.....q.U..S..
+ 01b0 00000081 c33d1200 005183ec 0c6a01e8  .....=...Q...j..
+ 01c0 bcffffff 8d83a1ee ffff8904 24e8beff  ............$...
+ 01d0 ffffc704 24000000 00e8a2ff ffff8d65  ....$..........e
+ 01e0 f831c059 5b5d8d61 fcc36690 66906690  .1.Y[].a..f.f.f.
+ 01f0 5589e553 e8720000 0081c3f7 11000083  U..S.r..........
+ 0200 ec106a01 e877ffff ff8d837f eeffff89  ..j..w..........
+ 0210 0424e879 ffffffc7 04240000 0000e85d  .$.y.....$.....]
+ 0220 ffffff8b 5dfc83c4 10c9c38d 74260090  ....].......t&..
+ 0230 5589e553 e8320000 0081c3b7 11000083  U..S.2..........
+ 0240 ec106a01 e837ffff ff8d8390 eeffff89  ..j..7..........
+ 0250 0424e839 ffffffc7 04240000 0000e81d  .$.9.....$......
+ 0260 ffffff8b 5dfc83c4 10c9c38b 1c24c3    ....]........$. 
+Contents of section .rodata:
+ 026f 496e204d 6f64756c 653a2049 6e69740a  In Module: Init.
+ 027f 00496e20 4d6f6475 6c653a20 45786974  .In Module: Exit
+ 028f 0a00496e 204d6f64 756c653a 204d6169  ..In Module: Mai
+ 029f 6e0a00                               n..             
+Contents of section .eh_frame:
+ 02a4 14000000 00000000 017a5200 017c0801  .........zR..|..
+ 02b4 1b0c0404 88010000 20000000 1c000000  ........ .......
+ 02c4 2cffffff 3b000000 00410e08 8502420d  ,...;....A....B.
+ 02d4 05418303 76c5c30c 04040000 20000000  .A..v....... ...
+ 02e4 40000000 48ffffff 3b000000 00410e08  @...H...;....A..
+ 02f4 8502420d 05418303 76c5c30c 04040000  ..B..A..v.......
+ 0304 30000000 64000000 94feffff 4a000000  0...d.......J...
+ 0314 00440c01 00491005 02750041 10030275  .D...I...u.A...u
+ 0324 7c4c0f03 7578066a c10c0100 41c341c5  |L..ux.j....A.A.
+ 0334 430c0404 10000000 98000000 2bffffff  C...........+...
+ 0344 04000000 00000000 20000000 ac000000  ........ .......
+ 0354 1cfeffff 30000000 000e0846 0e0c4a0f  ....0......F..J.
+ 0364 0b740478 003f1a3b 2a322422           .t.x.?.;*2$"    
+Contents of section .dynamic:
+ 1370 fdffff7f 37000000 04000000 94000000  ....7...........
+ 1380 05000000 20010000 06000000 c0000000  .... ...........
+ 1390 0a000000 3b000000 0b000000 10000000  ....;...........
+ 13a0 03000000 f0130000 02000000 10000000  ................
+ 13b0 14000000 11000000 17000000 5c010000  ............\...
+ 13c0 00000000 00000000 00000000 00000000  ................
+ 13d0 00000000 00000000 00000000 00000000  ................
+ 13e0 00000000 00000000 00000000 00000000  ................
+Contents of section .got.plt:
+ 13f0 70130000 00000000 00000000 86010000  p...............
+ 1400 96010000                             ....            
+Contents of section .comment:
+ 0000 4743433a 2028474e 55292031 312e322e  GCC: (GNU) 11.2.
+ 0010 3000                                 0.              
+Contents of section .debug_aranges:
+ 0000 24000000 02000000 00000400 00000000  $...............
+ 0010 f0010000 7b000000 a0010000 4a000000  ....{.......J...
+ 0020 00000000 00000000                    ........        
+Contents of section .debug_info:
+ 0000 af010000 05000104 00000000 08ab0000  ................
+ 0010 00212a00 00000000 00000c00 00000000  .!*.............
+ 0020 00000000 00000104 05050000 00010407  ................
+ 0030 29000000 010c048b 00000001 02059700  )...............
+ 0040 00000904 05696e74 00010805 00000000  .....int........
+ 0050 01010642 00000001 02076700 00000104  ...B......g.....
+ 0060 072e0000 00010807 24000000 01010840  ........$......@
+ 0070 00000001 01064900 00000a73 00000001  ......I....s....
+ 0080 08049000 00000496 00000096 00000005  ................
+ 0090 2d000000 0700037a 00000006 11010000  -......z........
+ 00a0 21860000 00049600 0000b500 0000052d  !..............-
+ 00b0 0000000f 0006a100 00002ca5 00000003  ..........,.....
+ 00c0 73000000 0b5a0000 00033d05 42000000  s....Z....=.B...
+ 00d0 db000000 07960000 000c000d 13000000  ................
+ 00e0 041c06ed 00000007 ed000000 00010102  ................
+ 00f0 3b000000 0e0e0000 00010e05 42000000  ;...........B...
+ 0100 a0010000 4a000000 019c4d01 00000f62  ....J.....M....b
+ 0110 00000001 0e0f4200 00000291 00108600  ......B.........
+ 0120 0000010e 1b4d0100 00120000 000c0000  .....M..........
+ 0130 0002c401 0000db00 000002d2 010000c4  ................
+ 0140 00000002 de010000 db000000 0003bf00  ................
+ 0150 0000114e 00000001 0a113002 00003b00  ...N......0...;.
+ 0160 0000019c 84010000 02490200 00db0000  .........I......
+ 0170 00025702 0000c400 00000263 020000db  ..W........c....
+ 0180 00000000 127a0000 00010611 f0010000  .....z..........
+ 0190 3b000000 019c0209 020000db 00000002  ;...............
+ 01a0 17020000 c4000000 02230200 00db0000  .........#......
+ 01b0 000000                               ...             
+Contents of section .debug_abbrev:
+ 0000 0124000b 0b3e0b03 0e000002 48007d01  .$...>......H.}.
+ 0010 7f130000 030f000b 21044913 00000401  ........!.I.....
+ 0020 01491301 13000005 21004913 2f0b0000  .I......!.I./...
+ 0030 06340003 0e3a2102 3b0b3921 15491300  .4...:!.;.9!.I..
+ 0040 00070500 49130000 08110125 0e130b03  ....I......%....
+ 0050 1f1b1f55 17110110 17000009 24000b0b  ...U........$...
+ 0060 3e0b0308 00000a26 00491300 000b2e01  >......&.I......
+ 0070 3f19030e 3a0b3b0b 390b4913 3c190113  ?...:.;.9.I.<...
+ 0080 00000c18 0000000d 2e013f19 030e3a0b  ..........?...:.
+ 0090 3b0b390b 3c190113 00000e2e 013f1903  ;.9.<........?..
+ 00a0 0e3a0b3b 0b390b49 13110112 0640187a  .:.;.9.I.....@.z
+ 00b0 19011300 000f0500 030e3a0b 3b0b390b  ..........:.;.9.
+ 00c0 49130218 00001005 00030e3a 0b3b0b39  I..........:.;.9
+ 00d0 0b491302 17b74217 0000112e 013f1903  .I....B......?..
+ 00e0 0e3a0b3b 0b390b11 01120640 187a1901  .:.;.9.....@.z..
+ 00f0 13000012 2e013f19 030e3a0b 3b0b390b  ......?...:.;.9.
+ 0100 11011206 40187a19 000000             ....@.z....     
+Contents of section .debug_line:
+ 0000 a9000000 05000400 45000000 010101fb  ........E.......
+ 0010 0e0d0001 01010100 00000100 00010101  ................
+ 0020 1f040000 00003c00 00004000 00005200  ......<...@...R.
+ 0030 00000201 1f020f05 2a000000 002e0000  ........*.......
+ 0040 00016400 0000026c 00000003 75000000  ..d....l....u...
+ 0050 02052500 0502f001 00001705 02130525  ..%............%
+ 0060 06110502 08210674 d6050106 bb052506  .....!.t......%.
+ 0070 ca050213 05250611 05020821 0674d605  .....%.....!.t..
+ 0080 0106bb02 08000101 05240005 02a00100  .........$......
+ 0090 00030d01 05021305 2406114a 05020859  ........$..J...Y
+ 00a0 069ed6bc 05010613 020c0001 01        .............   
+Contents of section .debug_str:
+ 0000 6c6f6e67 206c6f6e 6720696e 74006d61  long long int.ma
+ 0010 696e0073 65745f64 65627567 5f6f7574  in.set_debug_out
+ 0020 70757400 6c6f6e67 206c6f6e 6720756e  put.long long un
+ 0030 7369676e 65642069 6e740062 6f6f6c00  signed int.bool.
+ 0040 756e7369 676e6564 20636861 72006d6f  unsigned char.mo
+ 0050 64756c65 5f657869 74007072 696e7466  dule_exit.printf
+ 0060 5f006172 67630073 686f7274 20756e73  _.argc.short uns
+ 0070 69676e65 6420696e 74006d6f 64756c65  igned int.module
+ 0080 5f696e69 74006172 6776006c 6f6e6720  _init.argv.long 
+ 0090 646f7562 6c650073 686f7274 20696e74  double.short int
+ 00a0 00626974 5f617272 61790047 4e552043  .bit_array.GNU C
+ 00b0 2b2b3137 2031312e 322e3020 2d6d7475  ++17 11.2.0 -mtu
+ 00c0 6e653d67 656e6572 6963202d 6d617263  ne=generic -marc
+ 00d0 683d7065 6e746975 6d70726f 202d6720  h=pentiumpro -g 
+ 00e0 2d4f3220 2d665049 43202d66 66726565  -O2 -fPIC -ffree
+ 00f0 7374616e 64696e67 202d666e 6f2d6f6d  standing -fno-om
+ 0100 69742d66 72616d65 2d706f69 6e746572  it-frame-pointer
+ 0110 00737973 5f746578 7400               .sys_text.      
+Contents of section .debug_line_str:
+ 0000 2f757372 2f6c6f63 616c2f6f 73646576  /usr/local/osdev
+ 0010 2f766572 73696f6e 732f762f 6d6f6475  /versions/v/modu
+ 0020 6c65735f 66696e61 6c007372 632f7265  les_final.src/re
+ 0030 66657265 6e63652e 63707000 73726300  ference.cpp.src.
+ 0040 2e2e2f6b 65726e65 6c2f696e 636c7564  ../kernel/includ
+ 0050 65002e2e 2f6c6962 6376762f 696e636c  e.../libcvv/incl
+ 0060 75646500 64656275 672e6800 7072696e  ude.debug.h.prin
+ 0070 74662e68 00746572 6d696e61 6c2e6800  tf.h.terminal.h.
+Contents of section .debug_loclists:
+ 0000 26000000 05000400 00000000 00000000  &...............
+ 0010 000006a0 01000004 00040291 04040423  ...............#
+ 0020 02710404 234a0291 0400               .q..#J....      
+Contents of section .debug_rnglists:
+ 0000 15000000 05000400 00000000 07f00100  ................
+ 0010 007b07a0 0100004a 00                 .{.....J.       
+
+Disassembly of section .plt:
+
+00000170 <set_debug_output@plt-0x10>:
+ 170:	ff b3 04 00 00 00    	push   0x4(%ebx)
+ 176:	ff a3 08 00 00 00    	jmp    *0x8(%ebx)
+ 17c:	00 00                	add    %al,(%eax)
+	...
+
+00000180 <set_debug_output@plt>:
+ 180:	ff a3 0c 00 00 00    	jmp    *0xc(%ebx)
+ 186:	68 00 00 00 00       	push   $0x0
+ 18b:	e9 e0 ff ff ff       	jmp    170 <set_debug_output@plt-0x10>
+
+00000190 <printf_@plt>:
+ 190:	ff a3 10 00 00 00    	jmp    *0x10(%ebx)
+ 196:	68 08 00 00 00       	push   $0x8
+ 19b:	e9 d0 ff ff ff       	jmp    170 <set_debug_output@plt-0x10>
+
+Disassembly of section .text:
+
+000001a0 <main>:
+ 1a0:	8d 4c 24 04          	lea    0x4(%esp),%ecx
+ 1a4:	83 e4 f0             	and    $0xfffffff0,%esp
+ 1a7:	ff 71 fc             	push   -0x4(%ecx)
+ 1aa:	55                   	push   %ebp
+ 1ab:	89 e5                	mov    %esp,%ebp
+ 1ad:	53                   	push   %ebx
+ 1ae:	e8 b8 00 00 00       	call   26b <__x86.get_pc_thunk.bx>
+ 1b3:	81 c3 3d 12 00 00    	add    $0x123d,%ebx
+ 1b9:	51                   	push   %ecx
+ 1ba:	83 ec 0c             	sub    $0xc,%esp
+ 1bd:	6a 01                	push   $0x1
+ 1bf:	e8 bc ff ff ff       	call   180 <set_debug_output@plt>
+ 1c4:	8d 83 a1 ee ff ff    	lea    -0x115f(%ebx),%eax
+ 1ca:	89 04 24             	mov    %eax,(%esp)
+ 1cd:	e8 be ff ff ff       	call   190 <printf_@plt>
+ 1d2:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+ 1d9:	e8 a2 ff ff ff       	call   180 <set_debug_output@plt>
+ 1de:	8d 65 f8             	lea    -0x8(%ebp),%esp
+ 1e1:	31 c0                	xor    %eax,%eax
+ 1e3:	59                   	pop    %ecx
+ 1e4:	5b                   	pop    %ebx
+ 1e5:	5d                   	pop    %ebp
+ 1e6:	8d 61 fc             	lea    -0x4(%ecx),%esp
+ 1e9:	c3                   	ret    
+ 1ea:	66 90                	xchg   %ax,%ax
+ 1ec:	66 90                	xchg   %ax,%ax
+ 1ee:	66 90                	xchg   %ax,%ax
+
+000001f0 <module_init>:
+ 1f0:	55                   	push   %ebp
+ 1f1:	89 e5                	mov    %esp,%ebp
+ 1f3:	53                   	push   %ebx
+ 1f4:	e8 72 00 00 00       	call   26b <__x86.get_pc_thunk.bx>
+ 1f9:	81 c3 f7 11 00 00    	add    $0x11f7,%ebx
+ 1ff:	83 ec 10             	sub    $0x10,%esp
+ 202:	6a 01                	push   $0x1
+ 204:	e8 77 ff ff ff       	call   180 <set_debug_output@plt>
+ 209:	8d 83 7f ee ff ff    	lea    -0x1181(%ebx),%eax
+ 20f:	89 04 24             	mov    %eax,(%esp)
+ 212:	e8 79 ff ff ff       	call   190 <printf_@plt>
+ 217:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+ 21e:	e8 5d ff ff ff       	call   180 <set_debug_output@plt>
+ 223:	8b 5d fc             	mov    -0x4(%ebp),%ebx
+ 226:	83 c4 10             	add    $0x10,%esp
+ 229:	c9                   	leave  
+ 22a:	c3                   	ret    
+ 22b:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+ 22f:	90                   	nop
+
+00000230 <module_exit>:
+ 230:	55                   	push   %ebp
+ 231:	89 e5                	mov    %esp,%ebp
+ 233:	53                   	push   %ebx
+ 234:	e8 32 00 00 00       	call   26b <__x86.get_pc_thunk.bx>
+ 239:	81 c3 b7 11 00 00    	add    $0x11b7,%ebx
+ 23f:	83 ec 10             	sub    $0x10,%esp
+ 242:	6a 01                	push   $0x1
+ 244:	e8 37 ff ff ff       	call   180 <set_debug_output@plt>
+ 249:	8d 83 90 ee ff ff    	lea    -0x1170(%ebx),%eax
+ 24f:	89 04 24             	mov    %eax,(%esp)
+ 252:	e8 39 ff ff ff       	call   190 <printf_@plt>
+ 257:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+ 25e:	e8 1d ff ff ff       	call   180 <set_debug_output@plt>
+ 263:	8b 5d fc             	mov    -0x4(%ebp),%ebx
+ 266:	83 c4 10             	add    $0x10,%esp
+ 269:	c9                   	leave  
+ 26a:	c3                   	ret    
+
+0000026b <__x86.get_pc_thunk.bx>:
+ 26b:	8b 1c 24             	mov    (%esp),%ebx
+ 26e:	c3                   	ret    

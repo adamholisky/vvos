@@ -1,0 +1,92 @@
+#include "creflect.h"
+#include "termgui.h"
+#include <stdio.h>
+#include <sys/ioctl.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdarg.h>
+#include <string.h>
+
+void DISPLAY_WINSIZE( void );
+void DISPLAY_VA_LIST( void );
+void DISPLAY_INT( char * name, uint32_t var );
+void DISPLAY_STRING( char *var );
+void DISPLAY_TERM_INFO( term_info *var );
+void DISPLAY_UNICODE_INFO( unicode_info *var );
+void DISPLAY_GRID( grid *var );
+void DISPLAY_COMPONENT( component *var );
+void DISPLAY_RECT( char * name, rect * r );
+
+void DISPLAY_TERM_INFO( term_info *var ) {
+        DISPLAY_STRING( var->buffer );
+        DISPLAY_INT( "heigh", var->height );
+        DISPLAY_INT( "width", var->width );
+}
+
+void DISPLAY_UNICODE_INFO( unicode_info *var ) {
+/*         DISPLAY_STRING( var->bottom_left );
+        DISPLAY_STRING( var->bottom_right );
+        DISPLAY_STRING( var->horizontal_bar );
+        DISPLAY_STRING( var->title_line_left );
+        DISPLAY_STRING( var->title_line_right );
+        DISPLAY_STRING( var->top_left );
+        DISPLAY_STRING( var->top_right );
+        DISPLAY_STRING( var->vertical_bar ); */
+}
+
+void DISPLAY_GRID( grid *var ) {
+}
+
+void DISPLAY_COMPONENT( component *var ) {
+}
+
+var_hash all_vars[] = {
+    { "args", DISPLAY_VA_LIST },
+    { "double_weight_unicode", DISPLAY_UNICODE_INFO },
+    { "i", DISPLAY_INT },
+    { "normal_weight_unicode", DISPLAY_UNICODE_INFO },
+    { "r", DISPLAY_GRID },
+    { "term", DISPLAY_TERM_INFO },
+    { "unicode", DISPLAY_INT },
+    { "w", DISPLAY_WINSIZE }
+};
+
+void DISPLAY_WINSIZE( void ) {
+
+}
+
+void DISPLAY_VA_LIST( void ) {
+	
+}
+
+void DISPLAY_INT( char * name, uint32_t var ) {
+        printf( "%s %d (0x%X)\n", name, var, var );
+}
+
+void DISPLAY_STRING( char *var ) {
+        printf( "%s\n", (char *)var );
+}
+
+void DISPLAY_RECT( char * name, rect * r ) {
+        DISPLAY_INT( "    height\t", r->height );
+        DISPLAY_INT( "    width\t", r->width );
+        DISPLAY_INT( "    x_left\t", r->x_left );
+        DISPLAY_INT( "    y_top\t", r->y_top );
+}
+
+void find_and_display( char * name, void * var ) {
+        for( int i = 0; i < 8; i++ ) {
+                var_hash *vh = &all_vars[i];
+                
+                //if( all_vars[i].hashed == hashed_name ) {
+                if( strcmp(vh->hashed, name) == 0 ) {
+                        rect * var_resolved = (rect *)var;
+
+                        printf( "%s --> ", name );
+                        printf( "rect {\n" );
+                        DISPLAY_RECT( "r", var_resolved );
+                        
+                        printf( "}\n" );
+                }
+        }
+}

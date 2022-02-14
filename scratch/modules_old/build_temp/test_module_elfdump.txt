@@ -1,0 +1,115 @@
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           Intel 80386
+  Version:                           0x1
+  Entry point address:               0x1b0
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          2664 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         3
+  Size of section headers:           40 (bytes)
+  Number of section headers:         24
+  Section header string table index: 23
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .hash             HASH            00000094 000094 000024 04   A  2   0  4
+  [ 2] .dynsym           DYNSYM          000000b8 0000b8 000040 10   A  3   1  4
+  [ 3] .dynstr           STRTAB          000000f8 0000f8 00001a 00   A  0   0  1
+  [ 4] .rel.plt          REL             00000114 000114 000010 08  AI  2  10  4
+  [ 5] .plt              PROGBITS        00000130 000130 000030 04  AX  0   0 16
+  [ 6] .text             PROGBITS        00000160 000160 000077 00  AX  0   0 16
+  [ 7] .rodata           PROGBITS        000001d7 0001d7 000019 01 AMS  0   0  1
+  [ 8] .eh_frame         PROGBITS        000001f0 0001f0 000000 00   A  0   0  4
+  [ 9] .dynamic          DYNAMIC         000011f0 0001f0 000080 08  WA  3   0  4
+  [10] .got.plt          PROGBITS        00001270 000270 000014 04  WA  0   0  4
+  [11] .comment          PROGBITS        00000000 000284 000012 01  MS  0   0  1
+  [12] .debug_aranges    PROGBITS        00000000 000296 000040 00      0   0  1
+  [13] .debug_info       PROGBITS        00000000 0002d6 000158 00      0   0  1
+  [14] .debug_abbrev     PROGBITS        00000000 00042e 00010e 00      0   0  1
+  [15] .debug_line       PROGBITS        00000000 00053c 0000cd 00      0   0  1
+  [16] .debug_frame      PROGBITS        00000000 00060c 0000a0 00      0   0  4
+  [17] .debug_str        PROGBITS        00000000 0006ac 0000f1 01  MS  0   0  1
+  [18] .debug_line_str   PROGBITS        00000000 00079d 0000b2 01  MS  0   0  1
+  [19] .debug_loclists   PROGBITS        00000000 00084f 000018 00      0   0  1
+  [20] .debug_rnglists   PROGBITS        00000000 000867 000013 00      0   0  1
+  [21] .symtab           SYMTAB          00000000 00087c 0000a0 10     22   7  4
+  [22] .strtab           STRTAB          00000000 00091c 00005f 00      0   0  1
+  [23] .shstrtab         STRTAB          00000000 00097b 0000ea 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), p (processor specific)
+
+There are no section groups in this file.
+
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  LOAD           0x000000 0x00000000 0x00000000 0x001f0 0x001f0 R E 0x1000
+  LOAD           0x0001f0 0x000011f0 0x000011f0 0x00094 0x00094 RW  0x1000
+  DYNAMIC        0x0001f0 0x000011f0 0x000011f0 0x00080 0x00080 RW  0x4
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .hash .dynsym .dynstr .rel.plt .plt .text .rodata 
+   01     .dynamic .got.plt 
+   02     .dynamic 
+
+Dynamic section at offset 0x1f0 contains 11 entries:
+  Tag        Type                         Name/Value
+ 0x7ffffffd (AUXILIARY)                  Auxiliary library: [PIC]
+ 0x00000004 (HASH)                       0x94
+ 0x00000005 (STRTAB)                     0xf8
+ 0x00000006 (SYMTAB)                     0xb8
+ 0x0000000a (STRSZ)                      26 (bytes)
+ 0x0000000b (SYMENT)                     16 (bytes)
+ 0x00000003 (PLTGOT)                     0x1270
+ 0x00000002 (PLTRELSZ)                   16 (bytes)
+ 0x00000014 (PLTREL)                     REL
+ 0x00000017 (JMPREL)                     0x114
+ 0x00000000 (NULL)                       0x0
+
+Relocation section '.rel.plt' at offset 0x114 contains 2 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+0000127c  00000207 R_386_JUMP_SLOT   00000160   main
+00001280  00000307 R_386_JUMP_SLOT   00000000   printf_
+No processor specific unwind information to decode
+
+Symbol table '.dynsym' contains 4 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 000001b0    35 FUNC    GLOBAL DEFAULT    6 __start
+     2: 00000160    72 FUNC    GLOBAL DEFAULT    6 main
+     3: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND printf_
+
+Symbol table '.symtab' contains 10 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000000     0 FILE    LOCAL  DEFAULT  ABS app.c
+     2: 00000000     0 FILE    LOCAL  DEFAULT  ABS test_module.c
+     3: 00000000     0 FILE    LOCAL  DEFAULT  ABS 
+     4: 000011f0     0 OBJECT  LOCAL  DEFAULT    9 _DYNAMIC
+     5: 000001d3     0 FUNC    LOCAL  DEFAULT    6 __x86.get_pc_thunk.bx
+     6: 00001270     0 OBJECT  LOCAL  DEFAULT   10 _GLOBAL_OFFSET_TABLE_
+     7: 000001b0    35 FUNC    GLOBAL DEFAULT    6 __start
+     8: 00000160    72 FUNC    GLOBAL DEFAULT    6 main
+     9: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND printf_
+
+Histogram for bucket list length (total of 3 buckets):
+ Length  Number     % of total  Coverage
+      0  2          ( 66.7%)
+      1  0          (  0.0%)      0.0%
+      2  0          (  0.0%)      0.0%
+      3  1          ( 33.3%)    100.0%
+
+No version information found in this file.
