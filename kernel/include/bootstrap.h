@@ -46,6 +46,13 @@ static inline uint8_t inportb( uint32_t port ) {
     return value;
 }
 
+/* gets a signed byte from a port */
+static inline int8_t sinportb( uint32_t port ) {
+    int8_t value;
+    __asm__ __volatile__ ("inb %w1,%b0" : "=a"(value) : "d"(port));
+    return value;
+}
+
 static inline uint8_t inportw( uint32_t port ) {
     uint8_t value;
     __asm__ __volatile__ ("inw %%dx,%%ax" : "=a"(value) : "d"(port));

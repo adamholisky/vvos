@@ -5,6 +5,9 @@
 extern "C" {
 #endif
 
+#define VVOS_SCREEN_WIDTH 1024
+#define VVOS_SCREEN_HEIGHT 768
+
 enum vga_color
 {
 	VGA_COLOR_BLACK = 0,
@@ -126,7 +129,11 @@ void vga_move_line( unsigned int dest_y, unsigned int src_y );
 void vga_put_char( unsigned char c, unsigned int x, unsigned int y );
 void draw_char( uint8_t * buffer, unsigned int x, unsigned int y, uint32_t fg, uint32_t bg, unsigned int font_char );
 void vga_draw_screen( void );
+void vga_draw_screen_box( rect *r );
 vga_information * vga_get_info( void );
+void framebuffer_copy_to_frontbuffer( int x, int y, int w, int h );
+void framebuffer_fill_rect_in_backbuffer( int x, int y, int w, int h, uint32_t color );
+void framebuffer_move_rect_in_backbuffer( int from_x, int from_y, int w, int h, int to_x, int to_y );
 
 static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) 
 {

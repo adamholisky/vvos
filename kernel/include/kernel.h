@@ -9,19 +9,17 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 #include <globals.h>
-#include "bootstrap.h"
-#include <string.h>
-#include "terminal.h"
 #include <printf.h>
-#include "serial.h"
-#include "memory.h"
-#include "kmalloc.h"
-#include "task.h"
-#include "modules_bootstrap.h"
-#include "debug.h"
-#include <multiboot.h>
+#include <debug.h>
+#include <kmalloc.h>
+#include <string.h>
+#include <memory.h>
+#include <bootstrap.h>
 
-void kernel_main( unsigned long mb_magic, multiboot_info_t *mb_info );
+typedef uint8_t byte;
+typedef uint16_t word;
+
+#define do_immediate_shutdown() outportb( 0xF4, 0x00 )
 
 #ifdef __cplusplus
 }

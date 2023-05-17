@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "task.h": "c",
+        "pci.h": "c",
+        "kshell.h": "c",
+        "dlfcn.h": "c",
+        "loader.h": "c",
+        "fs.h": "c",
+        "afs.h": "c",
+        "syscall.h": "c",
+        "testapp.h": "c",
+        "observer.h": "c",
+        "kernel.h": "c",
+        "unistd.h": "c"
+    }
+}

@@ -1,4 +1,7 @@
-#include "memory.h"
+#include <memory.h>
+.extern kernel_main
+.extern global_page_data_directories
+.extern kernel_page_data_tables
 
 .set MAGIC,    0x1BADB002 
 
@@ -22,8 +25,8 @@
 	#endif
 	#ifdef GRAPHICS_ON
 	.long 0
-	.long 1280
-	.long 720
+	.long 1024
+	.long 768
 	.long 32
 	#endif
 
@@ -35,31 +38,12 @@
 	.byte 0x04
 
 .section .bootstrap_stack, "aw", @nobits
+.global stack_bottom
+.global stack_top
 	.align 16
 	stack_bottom:
-	.skip 16384
+	.skip 75000
 	stack_top:
-
-.section .bss, "aw", @nobits 
-	.align 4096
-	.global boot_page_directory
-	.global paging_pd
-	paging_pd:
-	boot_page_directory:
-	.fill 1024, 4, 0
-
-	.global boot_page_table
-	.global paging_bpt
-	paging_bpt:
-	boot_page_table:
-	.fill 1024, 4, 0
-
-#ifdef PAGING_PAE
-	.align 0x1000
-	.global paging_pdpt
-	paging_pdpt:
-	.fill 4, 8, 0
-#endif
 
 .section .data
 .global GDTR
@@ -108,105 +92,36 @@ GDT_END:
 .global _asm_kernel_start
 .type _asm_kernel_start, @function
 _asm_kernel_start:
-	#ifdef PAGING_PAE
-
-		movl $(paging_pd - KERNEL_VIRT_LOAD_BASE + 0x1), paging_pdpt - KERNEL_VIRT_LOAD_BASE	    // load PDPT[0] with EDX
-		movl $(paging_pd - KERNEL_VIRT_LOAD_BASE + 0x1), paging_pdpt - KERNEL_VIRT_LOAD_BASE + 3*8  // load PDPT[3] with EDX (3 = 3gb = 0xC0000000)
-		
-		/* Setup the PD with the right address and info */
-		/*movl $(paging_pd - KERNEL_VIRT_LOAD_BASE), %edi
-		movl 0b10000011, %edx
-		movl %edx, (%edi)*/
-
-		xor %ecx, %ecx
-		movl $(paging_pd - KERNEL_VIRT_LOAD_BASE), %edi
-		movl $0x83, %ecx
-		movl %ecx, (%edi)
-
-		movl %cr4, %edx
-		bts  $5, %edx
-		movl %edx, %cr4
-
-		movl $(paging_pdpt - KERNEL_VIRT_LOAD_BASE), %edi
-		movl %edi, %cr3
-
-		movl %cr0, %edx
-		orl  $0x80000000, %edx
-		
-		movl %edx, %cr0
-
-		lea  pae2, %ecx
-		jmp  *%ecx										/* BSG: "Jump" */
-
-		pae2:
-
-		lgdt GDTR
-		mov $0x10, %ax
-		mov %ax, %ds
-		mov %ax, %ss
-		mov %ax, %es
-		mov %ax, %fs 
-		mov %ax, %gs
-
-		jmp $0x08, $pae3
-
-		pae3:
-		mov  $(stack_top), %esp							/* Setup the stack */
-
-		addl $0xC0000000, %ebx
-		push %ebx										/* Multiboot header pointer */
-		push %eax										/* Magic number */
-
-		xor %ebp, %ebp									/* NULL Stack for tracing purposes */
-
-		call kernel_main
-
-	#endif
+	movl $(kernel_page_data_tables - KERNEL_VIRT_LOAD_BASE + 0x1), global_page_data_directories - KERNEL_VIRT_LOAD_BASE	    // load PDPT[0] with EDX
+	movl $(kernel_page_data_tables - KERNEL_VIRT_LOAD_BASE + 0x1), global_page_data_directories - KERNEL_VIRT_LOAD_BASE + 3*8  // load PDPT[3] with EDX (3 = 3gb = 0xC0000000)
 	
-	movl $12800, %ecx
-	movl $0xFD00c828, %edi
-	g1:
-	movl $0x00AAAAAA, (%edi)
-	addl $4, %edi
-	dec %ecx
-	cmpl $0, %ecx
-	jnz g1
+	/* Setup the PD with the right address and info */
+	/*movl $(paging_pd - KERNEL_VIRT_LOAD_BASE), %edi
+	movl 0b10000011, %edx
+	movl %edx, (%edi)*/
+
+	xor %ecx, %ecx
+	movl $(kernel_page_data_tables - KERNEL_VIRT_LOAD_BASE), %edi
+	movl $0x83, %ecx
+	movl %ecx, (%edi)
+
+	movl %cr4, %edx
+	bts  $5, %edx
+	movl %edx, %cr4
+
+	movl $(global_page_data_directories - KERNEL_VIRT_LOAD_BASE), %edi
+	movl %edi, %cr3
+
+	movl %cr0, %edx
+	orl  $0x80000000, %edx
 	
+	movl %edx, %cr0
 
-
-	movl $(boot_page_table - 0xC0000000), %edi		/* EDI gets the physical page table  address */
-	movl $0, %esi									/* 0 == first address mapped */
-	movl $1024, %ecx								/* Map our pages */
-
-stage1:	
-	cmpl $0, %ecx
-	dec %ecx
-
-stage2:
-	movl %esi, %edx									/* Load physical address into EDX */
-	orl  $0x003, %edx								/* Make the kernel's phsyical mem present and writeable */
-	movl %edx, (%edi)								/* Move table entry to address pointed to in edi */
-	addl $4096, %esi								/* Increment esi (physical address) by 4k */
-	addl $4, %edi									/* Increment the table entry by 1 (1 entry == 32 bits == 4 bytes) */
-	loop stage1
- 
-stage3:
-	/* Setup physical 0 and 0xC0000000 to be present, writable so when we load CR3 we don't error out */
-	movl $(boot_page_table - 0xC0000000 + 0x003), boot_page_directory - 0xC0000000
-	movl $(boot_page_table - 0xC0000000 + 0x003), boot_page_directory - 0xC0000000 + 768 * 4
-
-	movl $(boot_page_directory - 0xC0000000), %ecx	/* Correct for linker 0xC0000000 offset */
-	movl %ecx, %cr3
-
-	movl %cr0, %ecx
-	orl  $0x80010000, %ecx							/* Enable w/4kb paging */
-	movl %ecx, %cr0
-
-
-	lea  stage4, %ecx
+	lea  pae2, %ecx
 	jmp  *%ecx										/* BSG: "Jump" */
 
-stage4:
+	pae2:
+
 	lgdt GDTR
 	mov $0x10, %ax
 	mov %ax, %ds
@@ -215,13 +130,9 @@ stage4:
 	mov %ax, %fs 
 	mov %ax, %gs
 
-	jmp $0x08, $stage5
+	jmp $0x08, $pae3
 
-stage5:
-	movl $0, boot_page_directory					/* Remove entry 0, since it's mapped now. Refresh cr3 */
-	movl %cr3, %ecx
-	movl %ecx, %cr3
-
+	pae3:
 	mov  $(stack_top), %esp							/* Setup the stack */
 
 	addl $0xC0000000, %ebx
@@ -233,6 +144,7 @@ stage5:
 	call kernel_main
 
 .global asm_refresh_cr3
+.type asm_refresh_cr3, @function
 asm_refresh_cr3:
 	xor %ecx, %ecx
 	movl %cr3, %ecx
@@ -295,6 +207,5 @@ restore_context:
 	subl $4, %esp
 	
 	ret
-
 
 .size _asm_kernel_start, . - _asm_kernel_start

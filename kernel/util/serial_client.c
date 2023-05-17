@@ -1,5 +1,7 @@
 #include "kernel.h"
 #include "serial_client.h"
+#include <task.h>
+#include <elf.h>
 #include <syscall.h>
 
 char * data;
@@ -107,7 +109,7 @@ void ssvv_read_file_test( void ) {
 char * app_page = NULL;
 
 void ssvv_exec_test_app( void ) {
-	bool first_run = false;
+/* 	bool first_run = false;
 	uint32_t size;
 	uint32_t task_id;
 
@@ -122,7 +124,7 @@ void ssvv_exec_test_app( void ) {
 
 	task_id = load_module_elf_image( (uint32_t *)app_page );
 
-	task_initalize_and_run( task_id );
+	task_initalize_and_run( task_id ); */
 
 	//sched_yield();
 }

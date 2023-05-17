@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug w/Run",
+            "type": "cppdbg",
+            "request": "launch",
+            "miDebuggerServerAddress": "localhost:5894",
+            "cwd": "/usr/local/osdev/versions/v",
+            "program": "/usr/local/osdev/versions/v/build/versionv.bin",
+            "MIMode": "gdb",
+            "preLaunchTask": "Run Debug Normal"
+        }
+
+    ]
+}

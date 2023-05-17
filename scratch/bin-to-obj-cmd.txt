@@ -1,0 +1,1 @@
+/usr/local/osdev/bin/i686-elf-objcopy -I binary -O elf32-i386 -B i386 --rename-section .data=.bindata afs.img afsimg.o

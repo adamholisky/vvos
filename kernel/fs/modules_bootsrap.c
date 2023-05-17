@@ -94,7 +94,7 @@ uint32_t load_module_elf_image( uint32_t *raw_data_start ) {
 
 	module_task->code_start_virt = page_allocate( 1 );
 	module_task->code_start_phys = module_task->code_start_virt - (void *)KERNEL_VIRT_HEAP_BASE + (void *)get_physical_memory_base();
-	module_task->stack = page_allocate( 1 );
+	//module_task->stack = page_allocate( 1 );
 	module_task->data_start_virt = page_allocate( 1 );
 	module_task->data_start_phys = module_task->data_start_virt - (void *)KERNEL_VIRT_HEAP_BASE + (void *)get_physical_memory_base();
 

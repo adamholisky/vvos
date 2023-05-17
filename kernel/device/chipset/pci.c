@@ -4,6 +4,9 @@
 pci_header	pci_devices[ 15 ];
 uint32_t	pci_devices_top;
 
+uint8_t		hack_8254_bus = 0;
+uint8_t		hack_8254_device = 0;
+
 #undef kdebug_pci
 
 void pci_initalize( void ) {
@@ -26,6 +29,12 @@ void pci_initalize( void ) {
 			if( vendor != 0xFFFF ) {
 				pci_read_header( &pci_devices[pci_devices_top], bus, device, 0 );
 				pci_devices_top++;
+
+				if( pci_devices[pci_devices_top - 1].device_id == 0x100E ) {
+					klog( "0x100E found: bus = %d, device = %d\n", bus, device );
+					hack_8254_bus = bus;
+					hack_8254_device = device;
+				}
 
 				if( pci_devices[ pci_devices_top - 1 ].header_type == 0x80 ) {
 					for( f = 1; f < 8; f++ ) {
@@ -50,10 +59,10 @@ void pci_initalize( void ) {
 
 		if( d->class_code == 0x06 ) continue;
 
-		#ifdef kdebug_pci
+		
 		k_log( sys_pci, level_info, "[%d] Class: %02X   Subclass: %02X   Prog IF: %02X   Revision: %02X   Vendor: %04X   Device ID: %04X",
 			     i, d->class_code, d->subclass, d->prog_if, d->revision_id, d->vendor_id, d->device_id );
-		#endif
+		
 	}
 
 	log_entry_exit();
@@ -119,4 +128,22 @@ pci_header * pci_get_header_by_device_id( uint32_t _device_id ) {
 	}
 
 	return return_val;
+}
+
+/* TODO: Rewrite */
+uint32_t pci_read_dword( const uint16_t bus, const uint16_t dev, const uint16_t func, const uint32_t reg ) {
+	out_port_long( 0xCF8, 0x80000000L | ((uint32_t)bus << 16) |((uint32_t)dev << 11) |
+	((uint32_t)func << 8) | (reg & ~3) );
+
+	return in_port_long( ( 0xCFC )  >> ((reg & 2) * 8) & 0xFFFF );
+	//return in_port_long( 0xCFC + (reg & 3) );
+}
+
+/* TODO: Rewrite */
+void pci_write_dword( const uint16_t bus, const uint16_t dev, const uint16_t func, const uint32_t reg, unsigned data ) {
+	klog( "bus %x, dev %x, func %x, reg %x, data %x\n", bus, dev, func, reg, data );
+
+	out_port_long( 0xCF8, 0x80000000L | ((uint32_t)bus << 16) |((uint32_t)dev << 11) |
+	((uint32_t)func << 8) | (reg & ~3) );
+	out_port_long( 0xCFC + (reg & 3), data );
 }

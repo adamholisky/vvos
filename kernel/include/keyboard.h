@@ -11,8 +11,14 @@ extern "C" {
 
 typedef struct {
     uint32_t scanecode;
-    bool shift_down;
     char c;
+
+    bool shift;
+    bool alt;
+    bool control;
+    bool win;
+    bool fn;
+    bool capslock;
 } keyboard_event;
 
 char get_character( unsigned int scan_code );
@@ -26,6 +32,7 @@ void keyboard_event_handler( event_message * message );
 char keyboard_get_char_nonblocking( void );
 char keyboard_get_char_blocking( void );
 char keyboard_get_char_stage2( bool blocking );
+char keyboard_get_scancode( void );
 
 #ifdef __cplusplus
 }

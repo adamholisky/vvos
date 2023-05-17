@@ -6,6 +6,8 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <stdbool.h>
+#include <afs.h>
 
 extern bool SERIAL_CONSOLE_ACTIVE;
 extern bool GRAPHICS_ACTIVE;
@@ -23,6 +25,10 @@ extern uint32_t serial_com2_buffer_add_loc;
 extern uint32_t serial_com2_buffer_read_loc;
 extern uint32_t serial_com3_buffer_add_loc;
 extern uint32_t serial_com3_buffer_read_loc;
+
+extern vv_file *stdin;
+extern vv_file *stdout;
+extern vv_file *sterr;
 
 #ifdef __cplusplus
 }

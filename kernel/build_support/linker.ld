@@ -29,6 +29,11 @@ SECTIONS
 		*(.bootstrap_stack)
 	}
 
+	.endstuff ALIGN (4K) : AT (ADDR (.endstuff) - 0xC0000000)
+	{
+		*(.bindata)
+	}
+
 	
 	_kernel_end = ALIGN(0x1000);
 }

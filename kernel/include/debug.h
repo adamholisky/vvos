@@ -9,7 +9,7 @@ extern "C" {
 #include "serial.h"
 #include "terminal.h"
 
-#define KDEBUG_MAX_SYMBOLS 1024
+#define KDEBUG_MAX_SYMBOLS 2048
 #define STACKFRAME_MAX 25
 
 enum level {
@@ -77,6 +77,7 @@ kdebug_symbol * kdebug_get_symbol_array( void );
 uint32_t kdebug_get_symbol_addr( char * name );
 char * kdebug_get_function_at( uint32_t addr );
 char * kdebug_peek_at( uint32_t addr );
+char * kdebug_peek_at_n( uint32_t addr, int n );
 uint32_t reverse_uint32( uint32_t x );
 char peek_char( char c );
 void profile_test( void );
@@ -93,11 +94,10 @@ void stack_trace_test_func_c( void );
 void stack_trace_test_func_d( void );
 void klog_func( char * func, uint32_t line, char * message, ... );
 void klog_variable_func( uint32_t type, char * name, void * var, char * func, uint32_t line );
-void ftp_test( void );
 
 #define debug_out_on() set_debug_output( true )
 #define debug_out_off() set_debug_output( false )
-#define klog( ... ) debug_out_on(); printf( "[\x1b[0;34;49m%s:%d\x1b[0;00;00m] ", __PRETTY_FUNCTION__, __LINE__ ); printf( __VA_ARGS__ ); debug_out_off()
+#define klog( ... ) debug_out_on(); printf( "[%s:%d] ", __PRETTY_FUNCTION__, __LINE__ ); printf( __VA_ARGS__ ); debug_out_off()
 /* #define klog_var(v, t) klog_variable_func( t, #v "", &v, __FUNCTION__, __LINE__ )*/
 #define debugf( ... ) debug_out_on(); printf( __VA_ARGS__ ); debug_out_off()
 #define log_entry_enter() klog( "Enter\n" )
@@ -125,6 +125,23 @@ void ftp_test( void );
         bit_array[ 0xF & x ], \
         x ); \
         debugf( "       31   27   23   19   15   11   7    3\n" )
+
+#define dump_stack_trace() { \
+  	stackframe *frame; \
+	uint32_t corrected_eip = 0; \
+	asm volatile("1: lea 1b, %0;": "=a"(corrected_eip)); \
+	klog( "\n" ); \
+	klog( "    Stack Trace\n" );\
+	klog( "    ----------------------\n" );\
+	klog( "    % 2d:    0x%08X %s\n", 1, corrected_eip, kdebug_get_function_at(corrected_eip) );\
+	asm ("movl %%ebp,%0" : "=r"(frame)); \
+	frame = (stackframe *)frame->ebp; \
+	for( int i = 1; (frame != NULL) && (i < STACKFRAME_MAX); i++ ) { \
+		klog( "    % 2d:    0x%08X %s\n", i+1, frame->eip, kdebug_get_function_at(frame->eip) ); \
+		frame = (stackframe *)frame->ebp; \
+	} \
+} 
+
 
 #ifdef __cplusplus
 }

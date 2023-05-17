@@ -36,3 +36,16 @@ If the kernel's cli options contains `-graphics_on`:
 * `Video:` Standard
 * `Serial 2:` gets debugf output
 * `Serial 4:` writes to serial_out.txt, gets debugf output
+
+x86_64
+
+../binutils-2.39/configure --target=i686-elf --prefix=/usr/local/osdev --with-sysroot --disable-nls --disable-werror
+../binutils-2.39/configure --target=i686-elf,x86_64-elf,arm-none-eabi,aarch64-none-elf,riscv64-none-elf --prefix=/usr/local/osdev --with-sysroot --disable-nls --disable-werror
+
+
+../gcc-12.2.0/configure --target=i686-elf --prefix=/usr/local/osdev --disable-nls --enable-languages=c,c++ --without-headers
+../gcc-12.2.0/configure --target=x86_64-elf --prefix=/usr/local/osdev --disable-nls --enable-languages=c,c++ --without-headers
+../gcc-12.2.0/configure --target=arm-none-eabi --prefix=/usr/local/osdev --disable-nls --enable-languages=c,c++ --without-headers
+../gcc-12.2.0/configure --target=aarch64-none-elf --prefix=/usr/local/osdev --disable-nls --enable-languages=c,c++ --without-headers
+
+make all-gcc && make all-target-libgcc && make install-gcc && make install-target-libgcc

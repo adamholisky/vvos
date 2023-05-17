@@ -34,15 +34,6 @@ uint64_t __udivmoddi4(uint64_t num, uint64_t den, uint64_t *rem_p)
    return quot;
  }
 
-/* int atoi(const char* str) {
-	int result = 0;
-	while (isspace(*str))
-		str++;
-	while (isdigit(*str))
-		result = (result * 10) + (*(str++) - '0');
-	return result;
-} */
-
 unsigned long hex2int(char *a, unsigned int len)
 {
 	int i;

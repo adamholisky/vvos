@@ -84,6 +84,7 @@ void elf_load_program_headers(Elf32_Ehdr* elf_header, uint8_t* process_space, ui
     }
 }
 
+#undef KDEBUG_ELF_FIND_REL_PLT
 Elf32_Shdr * elf_find_rel_plt(uint32_t* mem, Elf32_Ehdr* elf_header) {
     Elf32_Shdr* ret = NULL;
 
@@ -91,12 +92,82 @@ Elf32_Shdr * elf_find_rel_plt(uint32_t* mem, Elf32_Ehdr* elf_header) {
         Elf32_Shdr* section = (Elf32_Shdr*)(((uint32_t)mem + elf_header->e_shoff) + (sizeof(Elf32_Shdr) * i));
 
         if (section->sh_type == SHT_REL) {
-            #ifdef kdebug_elf
+            ret = section;
+
+            #ifdef KDEBUG_ELF_FIND_REL_PLT
             klog("rel.plt section: [%d / %x @ 0x%08X] %d    0x%08X    0x%08X\n", i, i, (uint32_t)section, section->sh_type, section->sh_addr, section->sh_offset);
             #endif
-            ret = section;
         }
     }
+
+    return ret;
+}
+
+#undef KDEBUG_ELF_FIND_GOT_PLT
+Elf32_Shdr* elf_find_got_plt(uint32_t* mem, Elf32_Ehdr* elf_header) {
+    log_entry_enter();
+
+    Elf32_Shdr* ret = NULL;
+    char* sec_name = NULL;
+
+    #ifdef KDEBUG_ELF_FIND_GOT_PLT
+    klog( "elf_header->ident: \"0x%02X %c %c %c\"\n", elf_header->e_ident[0], elf_header->e_ident[1], elf_header->e_ident[2], elf_header->e_ident[3] );
+    klog( "mem: 0x%08x\n", mem );
+    klog( "elf_header: 0x%08x\n", elf_header );
+    #endif
+
+    for (int i = 0; i < elf_header->e_shnum; i++) {
+        Elf32_Shdr* section = (Elf32_Shdr*)(((uint32_t)mem + elf_header->e_shoff) + (sizeof(Elf32_Shdr) * i));
+
+        if (section->sh_type == SHT_PROGBITS) {
+            sec_name = elf_get_section_name(mem, elf_header, i);
+
+            #ifdef KDEBUG_ELF_FIND_GOT_PLT
+            printf("sn: %s\n", sec_name);
+            #endif
+            
+            if (strcmp(sec_name, ".got.plt") == 0) {
+                ret = section;
+
+                #ifdef KDEBUG_ELF_FIND_GOT_PLT
+                klog("got.plt section: [%d / %x @ 0x%08X] %d    0x%08X    0x%08X\n", i, i, (uint32_t)section, section->sh_type, section->sh_addr, section->sh_offset);
+                #endif
+            }
+        }
+    }
+
+    log_entry_exit();
+
+    return ret;
+}
+
+#undef KDEBUG_ELF_GET_SECTION_NAME
+char* elf_get_section_name(uint32_t* mem, Elf32_Ehdr* elf_header, uint32_t sec_num) {
+    uint32_t mem_offset = elf_header->e_shoff + (sizeof(Elf32_Shdr) * elf_header->e_shstrndx);
+    Elf32_Shdr* elf_str_shdr = (Elf32_Shdr*)(((uint32_t)mem + elf_header->e_shoff) + (sizeof(Elf32_Shdr) * elf_header->e_shstrndx));
+
+    uint32_t elf_str_offset = elf_str_shdr->sh_offset;
+
+    Elf32_Shdr* section = (Elf32_Shdr*)(((uint32_t)mem + elf_header->e_shoff) + (sizeof(Elf32_Shdr) * sec_num));
+
+    char* ret = (char*)((char*)mem + elf_str_offset + section->sh_name);
+
+    #ifdef KDEBUG_ELF_GET_SECTION_NAME
+    klog( "ret: \"%s\"\n", ret );
+    klog( "elf_header->ident: \"0x%02X %c %c %c\"\n", elf_header->e_ident[0], elf_header->e_ident[1], elf_header->e_ident[2], elf_header->e_ident[3] );
+    klog( "elf_header->e_shoff: 0x%X\n", elf_header->e_shoff );
+    klog( "elf_header->e_shstrndx: 0x%X\n", elf_header->e_shstrndx );
+    klog( "sizeof(Elf32_Shdr): 0x%0X\n", sizeof(Elf32_Shdr) );
+    klog( "mem offset: 0x%08X\n", mem_offset );
+    klog( "mem: 0x%08X\n", mem );
+    klog( "elf_str_shdr: 0x%08X\n", elf_str_shdr );
+    klog( "elf_str_shdr->sh_name: 0x%X\n", elf_str_shdr->sh_name );
+    klog( "elf_str_shdr->sh_addr: 0x%08X\n", elf_str_shdr->sh_addr );
+    klog( "str_shdr->sh_offset: 0x%X\n", elf_str_shdr->sh_offset );
+    klog( "section->sh_name: 0x%X\n", section->sh_name );
+    klog( "----------\n" );
+
+    #endif
 
     return ret;
 }
@@ -157,41 +228,6 @@ Elf32_Shdr * elf_find_dynstr_tab(uint32_t* mem, Elf32_Ehdr* elf_header) {
     return ret;
 }
 
-
-Elf32_Shdr* elf_find_got_plt(uint32_t* mem, Elf32_Ehdr* elf_header) {
-    Elf32_Shdr* ret = NULL;
-    char* sec_name = NULL;
-
-    for (int i = 0; i < elf_header->e_shnum; i++) {
-        Elf32_Shdr* section = (Elf32_Shdr*)(((uint32_t)mem + elf_header->e_shoff) + (sizeof(Elf32_Shdr) * i));
-
-        if (section->sh_type == SHT_PROGBITS) {
-            sec_name = elf_get_section_name(mem, elf_header, i);
-            //printf("sn: %s\n", sec_name);
-            if (strcmp(sec_name, ".got.plt") == 0) {
-                #ifdef kdebug_elf
-                klog("got.plt section: [%d / %x @ 0x%08X] %d    0x%08X    0x%08X\n", i, i, (uint32_t)section, section->sh_type, section->sh_addr, section->sh_offset);
-                #endif
-                ret = section;
-            }
-        }
-    }
-
-    return ret;
-}
-
-char* elf_get_section_name(uint32_t* mem, Elf32_Ehdr* elf_header, uint32_t sec_num) {
-    Elf32_Shdr* elf_str_shdr = (Elf32_Shdr*)(((uint32_t)elf_header + elf_header->e_shoff) + (sizeof(Elf32_Shdr) * elf_header->e_shstrndx));
-    uint32_t elf_str_offset = elf_str_shdr->sh_offset;
-    Elf32_Shdr* section = (Elf32_Shdr*)(((uint32_t)mem + elf_header->e_shoff) + (sizeof(Elf32_Shdr) * sec_num));
-
-    char* ret = (char*)((char*)mem + elf_str_offset + section->sh_name);
-
-    return ret;
-}
-
-
-
 char* elf_get_sym_name_from_index(uint32_t* mem, Elf32_Ehdr* elf_header, uint32_t index) {
 	Elf32_Shdr *elf_sym_shdr = elf_find_dynsym_tab(mem, elf_header); 
 	Elf32_Shdr *elf_str_shdr = elf_find_sym_strtab(mem, elf_header);
@@ -234,4 +270,8 @@ uint16_t elf_get_sym_value_from_index(uint32_t* mem, Elf32_Ehdr* elf_header, uin
 	//kdebug_peek_at( (uint8_t)mem + elf_dynstr_shdr->sh_offset );
 
     return elf_sym->st_value;
+}
+
+void elf_link_got_to_known_syms( Elf32_Ehdr *elf_header, uint8_t *data ) {
+    
 }

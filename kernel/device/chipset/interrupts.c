@@ -3,6 +3,7 @@
 #include "task.h"
 #include "syscall.h"
 #include "keyboard.h"
+#include "mouse.h"
 
 idtr            sIDTR;
 x86_interrupt   IDT[256];
@@ -48,7 +49,7 @@ void interrupts_initalize( void ) {
     add_interrupt(19, interrupt_19, 0);
 
 	add_interrupt( 0x20, interrupt_0x20, 0 );
-	add_interrupt( 0x21, interrupt_0x21, 0 );
+	
 	add_interrupt( 0x22, interrupt_0x22, 0 );
 	add_interrupt( 0x23, interrupt_0x23, 0 );
 	add_interrupt( 0x24, interrupt_0x24, 0 );
@@ -59,7 +60,7 @@ void interrupts_initalize( void ) {
 	add_interrupt( 0x29, interrupt_0x29, 0 );
 	add_interrupt( 0x2A, interrupt_0x2A, 0 );
 	add_interrupt( 0x2B, interrupt_0x2B, 0 );
-	add_interrupt( 0x2C, interrupt_0x2C, 0 );
+	
 	add_interrupt( 0x2D, interrupt_0x2D, 0 );
 	add_interrupt( 0x2E, interrupt_0x2E, 0 );
 	add_interrupt( 0x2F, interrupt_0x2F, 0 );
@@ -70,8 +71,13 @@ void interrupts_initalize( void ) {
 
 	// mask everything
 
-	outportb( 0x21, 0xFF );
-	outportb( 0xA1, 0xFF );
+/* 	outportb( 0x21, 0xFF );
+	outportb( 0xA1, 0xFF ); */
+
+	// WTF
+
+	outportb( PIC_PRIMARY_DATA, 0x00 );
+	outportb( PIC_SECONDARY_DATA, 0x00 );
 
 	uint16_t divisor = 11931;      // Calculate our divisor, default 65535 --> 1193180/hz
     outportb( 0x43, 0x36 );             // Set our command byte 0x36
@@ -80,9 +86,10 @@ void interrupts_initalize( void ) {
 
 	// unmask the timer
 	interrupt_unmask_irq( 0x20 );
-	interrupt_unmask_irq( 0x21 );
+	
 	interrupt_unmask_irq( 0x23 );
 	interrupt_unmask_irq( 0x24 );
+	
 
     load_idtr();
 
@@ -98,18 +105,18 @@ void interrupts_initalize( void ) {
 
 /* #pragma GCC push_options
 #pragma GCC optimize ("O0") */
-void interrupt_default_handler( unsigned long interrupt_num, unsigned long route_code, x86_context ** _stack ) {
+void interrupt_default_handler( uint32_t *stack, uint32_t interrupt_num, uint32_t route_code, x86_context ** _context ) {
 	task *p;
-	x86_context * stack = *_stack;
-	uint32_t * uint32_stack_pointer = (uint32_t *)*_stack;
+	x86_context * context = *_context;
+	uint32_t * uint32_stack_pointer = (uint32_t *)*_context;
 	uint32_t fault_addr = 0;
-	uint32_t corrected_err = stack->err;
-	uint32_t corrected_eip = stack->eip;
+	uint32_t corrected_err = context->err;
+	uint32_t corrected_eip = context->eip;
 	page_fault_err *pf_err = NULL;
 	bool error_code_present = false;
 	bool allow_return = false;
 	//dbC();
-	//debugf( "interrupt_default_handler:\n    interrupt_num: 0x%X\n    route_code: 0x%0X\n", interrupt_num, route_code );
+	//klog( "interrupt_default_handler:\n    interrupt_num: 0x%X\n    route_code: 0x%0X\n", interrupt_num, route_code );
 
 	if( route_code == 0x01 ) {
         switch( interrupt_num ) {
@@ -161,13 +168,13 @@ void interrupt_default_handler( unsigned long interrupt_num, unsigned long route
 				debugf( "\n" );
 				klog( "Exception: EXCEPTION_PAGE_FAULT\n");
 				error_code_present = true;
-				klog( "    %s() @ 0x%08X\n", kdebug_get_function_at( stack->eip ), stack->eip );
+				klog( "    %s() @ 0x%08X\n", kdebug_get_function_at( context->eip ), context->eip );
 
 				//asm volatile("movL %%cr2,%0" :"=m"(fault_addr));
 				fault_addr = get_cr2();
 				klog( "    Fault address: 0x%08X\n", fault_addr );
 
-				pf_err = (page_fault_err *)&stack->err;
+				pf_err = (page_fault_err *)&context->err;
 				klog( "    Flags present:" );
 				if( pf_err->present ) { debugf( " present "); }
 				if( pf_err->write ) { debugf( " write "); }
@@ -241,15 +248,15 @@ void interrupt_default_handler( unsigned long interrupt_num, unsigned long route
         }
 
 		if( !error_code_present ) {
-			corrected_eip = stack->err;
+			corrected_eip = context->err;
 			corrected_err = 0;
 		}
 
 		klog( "    current_task: 0x%X\n", get_current_task_id() );
-		klog( "    eax:  0x%08X  ebx:  0x%08X  ecx:  0x%08X  edx:  0x%08X\n", stack->eax, stack->ebx, stack->ecx, stack->edx );
-		klog( "    esp:  0x%08X  ebp:  0x%08X  esi:  0x%08X  edi:  0x%08X\n", stack->esp, stack->ebp, stack->esi, stack->edi );
-		klog( "    ds:   0x%04X  es:   0x%04X  fs:   0x%04X  gs:   0x%04X\n", stack->ds, stack->es, stack->fs, stack->gs );
-		klog( "    esp:  0x%08X  cs:   0x%04X  ef:   0x%08X  err:  0x%08X\n", stack->_esp, stack->cs, stack->eflags, corrected_err);
+		klog( "    eax:  0x%08X  ebx:  0x%08X  ecx:  0x%08X  edx:  0x%08X\n", context->eax, context->ebx, context->ecx, context->edx );
+		klog( "    esp:  0x%08X  ebp:  0x%08X  esi:  0x%08X  edi:  0x%08X\n", context->esp, context->ebp, context->esi, context->edi );
+		klog( "    ds:   0x%04X  es:   0x%04X  fs:   0x%04X  gs:   0x%04X\n", context->ds, context->es, context->fs, context->gs );
+		klog( "    esp:  0x%08X  cs:   0x%04X  ef:   0x%08X  err:  0x%08X\n", context->_esp, context->cs, context->eflags, corrected_err);
 		klog( "    eip:  0x%08X\n", corrected_eip );
 
 		stackframe *frame;
@@ -293,7 +300,7 @@ void interrupt_default_handler( unsigned long interrupt_num, unsigned long route
 				if( timer_var < 101 ) {  // default 19
 					timer_var++;
 				} else {
-					//debugf( "!" );
+					debugf( "!" );
 					timer_var = 0;
 				}
 				break;
@@ -306,6 +313,9 @@ void interrupt_default_handler( unsigned long interrupt_num, unsigned long route
 			case 0x24:
 				serial_interrupt_read_from_com1();
 				break;
+			case 0x2C:
+				mouse_handler();
+				break;
 			case 0x30:
 				debugf( "+\n" );
 				break;
@@ -313,7 +323,7 @@ void interrupt_default_handler( unsigned long interrupt_num, unsigned long route
 				debugf( "-\n" );
 				break;
 			case 0x99:
-				syscall_handler( _stack );
+				syscall_handler( stack, _context );
 				break;
 		}
 	}
@@ -468,3 +478,4 @@ void serial_interrupt_read_from_com1( void ) {
 	// serial_read_port( COM1 );
 	serial_interrupt_handler( COM1 );
 }
+
